@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Moon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+    :root {
+      --moon-white: #e8e0d0;
+      --moon-glow: #c9b99a;
+      --night-deep: #05060e;
+      --night-mid: #0a0d1a;
+      --night-soft: #111526;
+      --star-gold: #d4a94a;
+      --indigo: #2a2d5e;
+      --mist: rgba(200, 185, 160, 0.08);
+      --text-main: #ddd6c8;
+      --text-dim: #8a8070;
+    }
+ 
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      font-family: 'Raleway', sans-serif;
+      background-color: var(--night-deep);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+ 
+    /* --- STARFIELD BACKGROUND --- */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 40% 10%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 65%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 80% 50%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 35% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 35%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 75% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 48% 55%, rgba(212,169,74,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 88% 12%, rgba(212,169,74,0.5) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+ 
+    /* --- NAV --- */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(5, 6, 14, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200, 185, 160, 0.1);
+      z-index: 100;
+    }
+ 
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.25em;
+      color: var(--moon-glow);
+    }
+ 
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+ 
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+ 
+    .nav-links a:hover { color: var(--moon-white); }
+ 
+    /* --- HERO --- */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      z-index: 1;
+    }
+ 
+    .moon {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, #f0e8d8 0%, #d4c5a8 40%, #a89070 75%, #6b5840 100%);
+      box-shadow:
+        0 0 40px rgba(200, 185, 160, 0.25),
+        0 0 100px rgba(200, 185, 160, 0.1),
+        inset -20px -15px 30px rgba(0,0,0,0.35);
+      margin-bottom: 3rem;
+      position: relative;
+      animation: moonFloat 6s ease-in-out infinite;
+    }
+ 
+    .moon::after {
+      content: '';
+      position: absolute;
+      top: 18%;
+      left: 22%;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.12);
+      box-shadow: 35px 25px 0 8px rgba(0,0,0,0.09), 60px 10px 0 5px rgba(0,0,0,0.07);
+    }
+ 
+    @keyframes moonFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+ 
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--star-gold);
+      margin-bottom: 1rem;
+    }
+ 
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--moon-white);
+      letter-spacing: 0.04em;
+      margin-bottom: 1.5rem;
+    }
+ 
+    .hero h1 span {
+      color: var(--star-gold);
+    }
+ 
+    .hero p {
+      max-width: 520px;
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text-dim);
+      margin-bottom: 2.5rem;
+    }
+ 
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2.5rem;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--night-deep);
+      background: var(--moon-glow);
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+ 
+    .btn:hover { background: var(--moon-white); transform: translateY(-2px); }
+ 
+    .btn-ghost {
+      background: transparent;
+      color: var(--moon-glow);
+      border: 1px solid rgba(200, 185, 160, 0.35);
+      margin-left: 1rem;
+    }
+ 
+    .btn-ghost:hover { background: var(--mist); color: var(--moon-white); transform: translateY(-2px); }
+ 
+    /* --- DIVIDER --- */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 800px;
+      margin: 0 auto 4rem;
+      padding: 0 2rem;
+    }
+ 
+    .divider-line { flex: 1; height: 1px; background: rgba(200,185,160,0.12); }
+    .divider-symbol { font-family: 'Cinzel', serif; color: var(--star-gold); font-size: 1.1rem; }
+ 
+    /* --- CARDS SECTION --- */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 2rem;
+    }
+ 
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--moon-white);
+      text-align: center;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.06em;
+    }
+ 
+    .section-sub {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      margin-bottom: 3.5rem;
+    }
+ 
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+ 
+    .card {
+      background: linear-gradient(145deg, rgba(17,21,38,0.95), rgba(10,13,26,0.98));
+      border: 1px solid rgba(200,185,160,0.1);
+      border-radius: 4px;
+      padding: 2rem 1.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+ 
+    .card:hover {
+      border-color: rgba(200,185,160,0.3);
+      transform: translateY(-5px);
+    }
+ 
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+ 
+    .card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--moon-glow);
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+ 
+    .card p {
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: var(--text-dim);
+    }
+ 
+    /* --- QUOTE --- */
+    .quote-section {
+      background: rgba(42, 45, 94, 0.18);
+      border-top: 1px solid rgba(200,185,160,0.07);
+      border-bottom: 1px solid rgba(200,185,160,0.07);
+    }
+ 
+    blockquote {
+      max-width: 650px;
+      margin: 0 auto;
+      text-align: center;
+    }
+ 
+    blockquote p {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--moon-white);
+      letter-spacing: 0.04em;
+      margin-bottom: 1.5rem;
+    }
+ 
+    blockquote cite {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--star-gold);
+      font-style: normal;
+    }
+ 
+    /* --- FOOTER --- */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(200,185,160,0.08);
+      position: relative;
+      z-index: 1;
+    }
+ 
+    footer p {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+    }
+ 
+    footer .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--moon-glow);
+      letter-spacing: 0.25em;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+ 
+  <nav>
+    <div class="nav-logo">☽ DARK MOON</div>
+    <ul class="nav-links">
+      <li><a href="#tentang">Tentang</a></li>
+      <li><a href="#eksplorasi">Eksplorasi</a></li>
+      <li><a href="#kutipan">Renungan</a></li>
+    </ul>
+  </nav>
+ 
+  <!-- HERO -->
+  <section class="hero">
+    <div class="moon"></div>
+    <p class="hero-eyebrow">✦ Fase Kegelapan Malam ✦</p>
+    <h1>Di Balik <span>Bayangan</span><br>Sang Bulan</h1>
+    <p>Ketika cahaya bulan tersembunyi, langit malam mengungkap misteri yang selama ini tersimpan di antara bintang-bintang jauh.</p>
+    <div>
+      <a href="#eksplorasi" class="btn">Jelajahi</a>
+      <a href="#kutipan" class="btn btn-ghost">Renungan</a>
+    </div>
+  </section>
+ 
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-symbol">✦</div>
+    <div class="divider-line"></div>
+  </div>
+ 
+  <!-- CARDS -->
+  <section id="eksplorasi">
+    <h2 class="section-title">Eksplorasi Malam</h2>
+    <p class="section-sub">✦ &nbsp; tiga wajah kegelapan &nbsp; ✦</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🌑</div>
+        <h3>Bulan Baru</h3>
+        <p>Fase dark moon — bulan berdiri sejajar matahari, wajahnya tersembunyi dari bumi. Simbol permulaan dan niat baru.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌌</div>
+        <h3>Langit Tanpa Cahaya</h3>
+        <p>Ketika bulan tak hadir, bintang-bintang pun bersinar lebih terang. Keheningan menjadi ruang bagi refleksi terdalam.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⭐</div>
+        <h3>Bintang Abadi</h3>
+        <p>Jauh melampaui orbit bulan, bintang-bintang membakar hidrogen selama miliaran tahun — cahaya purba yang menyentuh mata kita.</p>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- QUOTE -->
+  <section class="quote-section" id="kutipan">
+    <blockquote>
+      <p>"Malam yang paling gelap pun selalu berakhir, dan matahari akan terbit kembali."</p>
+      <cite>— Victor Hugo</cite>
+    </blockquote>
+  </section>
+ 
+  <!-- ABOUT -->
+  <section id="tentang">
+    <h2 class="section-title">Tentang</h2>
+    <p class="section-sub">✦ &nbsp; sebuah tema &nbsp; ✦</p>
+    <p style="max-width: 560px; margin: 0 auto; text-align: center; font-size: 0.92rem; line-height: 1.9; color: var(--text-dim);">
+      <em>Dark Moon</em> adalah tema web yang terinspirasi dari keindahan malam — perpaduan antara kegelapan semesta, cahaya bintang, dan misteri bulan yang selalu mengundang imajinasi.
+    </p>
+  </section>
+ 
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">☽ DARK MOON</div>
+    <p>Dibuat dengan tema malam yang penuh misteri &nbsp;✦&nbsp; 2026</p>
+  </footer>
+ 
+</body>
+</html>
